@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundSplash"
+    tools:context="hbworld.com.starwarsbot.ui.activity.SplashActivity">
+
+
+    <ImageView
+        android:id="@+id/imgSplashLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/splash_logo"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/splash_text"
+        android:layout_below="@+id/imgSplashLogo"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorWhite"
+        android:alpha=".4"
+        android:layout_marginTop="@dimen/splash_text_margin"/>
+
+</RelativeLayout>
