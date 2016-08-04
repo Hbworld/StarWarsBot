@@ -33,7 +33,7 @@
             app:cardCornerRadius="@dimen/card_corner_radius"
             android:visibility="@{viewModel.messageVisibility}"
             app:contentPadding="@dimen/padding_chat_box"
-            android:layout_marginLeft="@dimen/padding_chat_box"
+            android:layout_marginLeft="@dimen/margin_from_avatar"
             android:layout_toRightOf="@+id/imgAvatar">
 
             <TextView

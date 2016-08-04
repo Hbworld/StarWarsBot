@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import hbworld.com.starwarsbot.model.People;
 import hbworld.com.starwarsbot.model.PeopleResponse;
 import hbworld.com.starwarsbot.ui.activity.DetailActivity;
 import hbworld.com.starwarsbot.ui.adapter.ChatAdapter;
+import hbworld.com.starwarsbot.utils.AppUtil;
 import hbworld.com.starwarsbot.utils.ChatUtil;
 import hbworld.com.starwarsbot.utils.Constants;
 import hbworld.com.starwarsbot.webConnect.ApiClient;
@@ -112,38 +114,47 @@ public class ChatViewModel extends BaseObservable {
                         @Override
                         public void onResponse(Call<PeopleResponse> call, Response<PeopleResponse> response) {
 
-                            final ArrayList<People> peoples = new ArrayList<People>();
-                            for (int i = 0; i <= 2; i++) {
-                                peoples.add(response.body().getResults().get(i));
-                            }
-
-                            new Handler().postDelayed(new Runnable() {
-                                public void run() {
-                                    new ChatUtil().playBlopSound();
-                                    Chat chat = new Chat();
-                                    mChats.clear();
-                                    chat.setLeft(true);
-                                    chat.setFirst(true);
-                                    chat.setType(Constants.TYPE_CHOICE_TWO);
-                                    chat.setChoice_first(peoples.get(0).getName());
-                                    chat.setChoice_second(peoples.get(1).getName());
-                                    chat.setViewType(1);
-                                    chat.setPeople(true);
-                                    mChats.add(chat);
-                                    chatAdapter.addPeople(peoples);
-                                    chatAdapter.addItem(mChats);
-
-                                    if (chatAdapter.getItemCount() > 1) {
-                                        mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView, null, chatAdapter.getItemCount() - 1);
-                                    }
+                            if (response.isSuccessful()) {
+                                final ArrayList<People> peoples = new ArrayList<People>();
+                                for (int i = 0; i <= 2; i++) {
+                                    peoples.add(response.body().getResults().get(i));
                                 }
-                            }, 2000);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    public void run() {
+                                        new ChatUtil().playBlopSound();
+                                        Chat chat = new Chat();
+                                        mChats.clear();
+                                        chat.setLeft(true);
+                                        chat.setFirst(true);
+                                        chat.setType(Constants.TYPE_CHOICE_TWO);
+                                        chat.setChoice_first(peoples.get(0).getName());
+                                        chat.setChoice_second(peoples.get(1).getName());
+                                        chat.setViewType(1);
+                                        chat.setPeople(true);
+                                        mChats.add(chat);
+                                        chatAdapter.addPeople(peoples);
+                                        chatAdapter.addItem(mChats);
+
+                                        if (chatAdapter.getItemCount() > 1) {
+                                            mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView, null, chatAdapter.getItemCount() - 1);
+                                        }
+                                    }
+                                }, 2000);
+                            } else
+                                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+
+
                         }
 
                         @Override
                         public void onFailure(Call<PeopleResponse> call, Throwable t) {
                             // Log error here since request failed
+
                             Log.e(TAG, t.toString());
+                            if (!AppUtil.isNetworkAvailable(context)) {
+                                Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
@@ -171,36 +182,42 @@ public class ChatViewModel extends BaseObservable {
                     call.enqueue(new Callback<FilmResponse>() {
                         @Override
                         public void onResponse(Call<FilmResponse> call, Response<FilmResponse> response) {
-                            final ArrayList<Films> films = new ArrayList<Films>();
-                            for (int i = 0; i <= 2; i++) {
-                                films.add(response.body().getResults().get(i));
-                            }
-                            new Handler().postDelayed(new Runnable() {
-                                public void run() {
-                                    new ChatUtil().playBlopSound();
-                                    Chat chat = new Chat();
-                                    mChats.clear();
-                                    chat.setLeft(true);
-                                    chat.setFirst(true);
-                                    chat.setType(Constants.TYPE_CHOICE_TWO);
-                                    chat.setChoice_first(films.get(0).getTitle());
-                                    chat.setChoice_second(films.get(1).getTitle());
-                                    chat.setViewType(1);
-                                    chat.setPeople(false);
-                                    mChats.add(chat);
-                                    chatAdapter.addItem(mChats);
-                                    chatAdapter.addFilms(films);
-                                    if (chatAdapter.getItemCount() > 1) {
-                                        mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView, null, chatAdapter.getItemCount() - 1);
-                                    }
+                            if (response.isSuccessful()) {
+                                final ArrayList<Films> films = new ArrayList<Films>();
+                                for (int i = 0; i <= 2; i++) {
+                                    films.add(response.body().getResults().get(i));
                                 }
-                            }, 2000);
+                                new Handler().postDelayed(new Runnable() {
+                                    public void run() {
+                                        new ChatUtil().playBlopSound();
+                                        Chat chat = new Chat();
+                                        mChats.clear();
+                                        chat.setLeft(true);
+                                        chat.setFirst(true);
+                                        chat.setType(Constants.TYPE_CHOICE_TWO);
+                                        chat.setChoice_first(films.get(0).getTitle());
+                                        chat.setChoice_second(films.get(1).getTitle());
+                                        chat.setViewType(1);
+                                        chat.setPeople(false);
+                                        mChats.add(chat);
+                                        chatAdapter.addItem(mChats);
+                                        chatAdapter.addFilms(films);
+                                        if (chatAdapter.getItemCount() > 1) {
+                                            mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView, null, chatAdapter.getItemCount() - 1);
+                                        }
+                                    }
+                                }, 2000);
+                            } else
+                                Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Call<FilmResponse> call, Throwable t) {
                             // Log error here since request failed
                             Log.e(TAG, t.toString());
+                            if (!AppUtil.isNetworkAvailable(context)) {
+                                Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }

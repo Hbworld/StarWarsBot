@@ -35,7 +35,7 @@ public class DetailViewModel extends BaseObservable {
     }
 
     public String getCreatedOn() {
-        return new AppUtil().getDate(isPeople ? people.getCreated() : films.getCreated());
+        return AppUtil.getDate(isPeople ? people.getCreated() : films.getCreated());
     }
 
     public View.OnClickListener onClick() {

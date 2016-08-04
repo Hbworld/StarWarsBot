@@ -1,7 +1,10 @@
 package hbworld.com.starwarsbot.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,8 +15,7 @@ import java.util.Locale;
  */
 public class AppUtil {
 
-    public String getDate(String createdOn) {
-
+    public static String getDate(String createdOn) {
         String date = null;
         Date date2 = null;
         int iend = createdOn.indexOf("T");
@@ -22,13 +24,19 @@ public class AppUtil {
             date = createdOn.substring(0, iend);
         }
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat targetFormat = new SimpleDateFormat("dd MMM yyyy",Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
         try {
             date2 = originalFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String formattedDate = targetFormat.format(date2);
-        return formattedDate;
+        return targetFormat.format(date2);
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

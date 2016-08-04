@@ -11,4 +11,7 @@
     <string name="people">People</string>
     <string name="films">Films</string>
     <string name="url">URL</string>
+    <string name="connect_to_internet">Please conect to a internet connection !</string>
+    <string name="server_error">server error</string>
+    <string name="network_error">no network available</string>
 </resources>

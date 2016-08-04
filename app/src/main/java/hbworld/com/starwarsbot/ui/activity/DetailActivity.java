@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import hbworld.com.starwarsbot.R;
+
 import hbworld.com.starwarsbot.databinding.ActivityDetailBinding;
 import hbworld.com.starwarsbot.model.Films;
 import hbworld.com.starwarsbot.model.People;
